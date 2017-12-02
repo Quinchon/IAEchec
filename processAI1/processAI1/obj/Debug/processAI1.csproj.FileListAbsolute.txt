@@ -31,7 +31,6 @@ D:\Cours\Cours_3A\IA\Jeu_echec\processAI1\processAI1\obj\Debug\processAI1.pdb
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\bin\Debug\processAI1.exe.config
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\bin\Debug\processAI1.exe
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\bin\Debug\processAI1.pdb
-D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\obj\Debug\processAI1.csprojResolveAssemblyReference.cache
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\obj\Debug\processAI1.csproj.CoreCompileInputs.cache
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\obj\Debug\processAI1.exe
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI1\processAI1\obj\Debug\processAI1.pdb

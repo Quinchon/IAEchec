@@ -139,7 +139,7 @@ namespace jeu_echec_stage
                                         mutexAI2.WaitOne();
                                         TimeSpan dur = DateTime.Now - start;
 
-                                        if (dur.TotalMilliseconds > 1000)
+                                        if (dur.TotalMilliseconds > 250)
                                         {
                                             form.setJoueur("NOIRS");
                                             form.finPartie(1);
