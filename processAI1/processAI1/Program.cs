@@ -11,10 +11,6 @@ namespace processAI1
 {
     class Program
     {
-
-        // On instancie notre echiquier (different de l'instance de jeu) utile pour nos calculs
-        private EchiquierIA echIA = EchiquierIA.Instance();
-
         static void Main(string[] args)
         {
             try
@@ -32,7 +28,11 @@ namespace processAI1
                                                    "a2","b2","c2","d2","e2","f2","g2","h2",
                                                    "a1","b1","c1","d1","e1","f1","g1","h1" };
 
-                
+
+                // Instancie un objet de la classe FnctionsIA ou sont implementees les fonctions de l'IA
+                FonctionsIA fonctionsIA = new FonctionsIA();
+
+
 
                 while (!stop)
                 {
@@ -69,25 +69,39 @@ namespace processAI1
                                 /***************************************** ECRIRE LE CODE DE L'IA *************************************/
                                 /******************************************************************************************************/
 
-                                List<String> mesPieces = new List<String>();
-                                for (int i = 0; i < tabVal.Length; i++)
+                                //List<String> mesPieces = new List<String>();
+                                //for (int i = 0; i < tabVal.Length; i++)
+                                //{
+                                //    if (tabVal[i] > 0) mesPieces.Add(tabCoord[i]);
+                                //}
+
+                                //List<String> reste = new List<String>();
+                                //for (int i = 0; i < tabVal.Length; i++)
+                                //{
+                                //    if (tabVal[i] <= 0) reste.Add(tabCoord[i]);
+                                //}
+
+                                //Random rnd = new Random();
+                                //coord[0] = mesPieces[rnd.Next(mesPieces.Count)];
+                                ////coord[0] = "b7";
+                                ////coord[1] = "b8";
+                                //coord[1] = tabCoord[rnd.Next(reste.Count)];
+                                ////coord[2] = "P";
+
+
+                                int[] simul = fonctionsIA.Fonction1(tabVal, 2);
+                            
+                                coord[0] = tabCoord[simul[0]];
+                                coord[1] = tabCoord[simul[1]];
+
+                                if (simul[2] == 1)
                                 {
-                                    if (tabVal[i] > 0) mesPieces.Add(tabCoord[i]);
+                                    coord[2] = "D";
                                 }
-
-                                List<String> reste = new List<String>();
-                                for (int i = 0; i < tabVal.Length; i++)
+                                else
                                 {
-                                    if (tabVal[i] <= 0) reste.Add(tabCoord[i]);
+                                    coord[2] = "";
                                 }
-
-                                Random rnd = new Random();
-                                coord[0] = mesPieces[rnd.Next(mesPieces.Count)];
-                                //coord[0] = "b7";
-                                //coord[1] = "b8";
-                                coord[1] = tabCoord[rnd.Next(reste.Count)];
-                                //coord[2] = "P";
-
                                 
                                 /********************************************************************************************************/
                                 /********************************************************************************************************/
@@ -116,141 +130,6 @@ namespace processAI1
                 Console.WriteLine("Memory-mapped file does not exist. Run Process A first.");
                 Console.ReadLine();
             }
-        }
-
-        //*********************** FONCTIONS SUPPLEMENTAIRES ************************
-
-        
-        // Liste les plateaux possibles a partir du plateau courant
-        public List<int[]> DeduitListePlateau(int[] plateau, int[] mesPieces)
-        {
-            List<int[]> listePlateau = new List<int[]>();
-
-            // Pour chacune des pieces de l'IA
-            foreach (int piece in mesPieces)
-            {
-                List<int> listeDeplacementPossible = DeduitDeplacementPossible(piece, plateau);
-
-                // Pour chacun des deplacements possibles de la piece en question
-                foreach (int deplacement in listeDeplacementPossible)
-                {
-                    listePlateau.Add(DeduitPlateau(piece, deplacement, plateau));
-                }
-            }
-
-            return listePlateau;
-
-        }
-
-        // Determine les deplacement possibles pour une piece
-        public List<int> DeduitDeplacementPossible(int piece, int[] plateau)
-        {
-            List<int> listeDepl = new List<int>();
-
-            // On met l'echiquier dans l'etat adeqat
-            echIA.SetPlateau(plateau);
-
-            /* TODO pour affiner la recherche des déplacements possibles
-            
-            switch (piece)
-            {
-                case 1: // cas pion 
-                    //do thing
-                    break;
-                case 21: // cas tour
-                    //do thing
-                    break;
-                case 22: // cas tour
-                    //do thing
-                    break;
-                case 31: // cas cavalier
-                    //do thing
-                    break;
-                case 32: // cas cavalier
-                    //do thing
-                    break;
-                case 4: // cas fou
-                    //do thing
-                    break;
-                case 5: // cas dame
-                    //do thing
-                    break;
-                case 6: // cas roi
-                    //do thing
-                    break;
-                
-            }
-            */
-
-            // parcours le plateau a la recherche de deplacements possibles pour la piece
-            foreach( int arrivee in plateau)
-            {
-                if(echIA.valide(piece, arrivee))
-                {
-                    listeDepl.Add(arrivee);
-                }
-            }
-
-            return listeDepl;
-        }
-
-
-        // Renvoie un plateeau de jeu avec le deplacement effectue
-        public int[] DeduitPlateau(int depart, int arrivee, int[] plateau)
-        {
-            plateau[arrivee] = plateau[depart];
-            plateau[depart] = 0;
-            return plateau;
-        }
-
-
-        // Calcul le score d'un plateau
-        public int ScorePlateau (int[] plateau)
-        {
-            int score = 0;
-            int bonus = 0;
-            foreach (int val in plateau)
-            {
-                // Determine à qui appartient la piece
-                if (val > 0)
-                {
-                    bonus = 1; // appartient a l'IA
-                }
-                else {
-                    bonus = -1; // appartient a l'adversaire
-                }
-
-                // ajoute le score associe à la piece
-                switch (val)
-                {
-                    case 1 : // cas pion
-                        score += (1 * bonus);
-                        break;
-                    case 21: // cas tour
-                        score += (5 * bonus);
-                        break;
-                    case 22: // cas tour
-                        score += (5 * bonus);
-                        break;
-                    case 31: // cas cavalier
-                        score += (3 * bonus);
-                        break;
-                    case 32: // cas cavalier
-                        score += (3 * bonus);
-                        break;
-                    case 4: // cas fou
-                        score += (3 * bonus);
-                        break;
-                    case 5: // cas dame
-                        score += (10 * bonus);
-                        break;
-                    case 6: // cas roi
-                        score += (1000 * bonus);
-                        break;
-                }
-
-            }
-            return score;
         }
     }
 }
