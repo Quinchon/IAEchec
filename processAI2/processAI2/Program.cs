@@ -28,6 +28,9 @@ namespace processAI2
                                                    "a2","b2","c2","d2","e2","f2","g2","h2",
                                                    "a1","b1","c1","d1","e1","f1","g1","h1" };
 
+                // Instancie un objet de la classe FnctionsIA ou sont implementees les fonctions de l'IA
+                FonctionsIA fonctionsIA = new FonctionsIA();
+
                 while (!stop)
                 {
                     using (var mmf = MemoryMappedFile.OpenExisting("plateau"))
@@ -62,24 +65,38 @@ namespace processAI2
                                 /***************************************** ECRIRE LE CODE DE L'IA *************************************/
                                 /******************************************************************************************************/
 
-                                List<String> mesPieces = new List<String>();
-                                for (int i = 0; i < tabVal.Length; i++)
-                                {
-                                    if (tabVal[i] < 0) mesPieces.Add(tabCoord[i]);
-                                }
+                                //List<String> mesPieces = new List<String>();
+                                //for (int i = 0; i < tabVal.Length; i++)
+                                //{
+                                //    if (tabVal[i] < 0) mesPieces.Add(tabCoord[i]);
+                                //}
 
-                                List<String> reste = new List<String>();
-                                for (int i = 0; i < tabVal.Length; i++)
-                                {
-                                    if (tabVal[i] <= 0) reste.Add(tabCoord[i]);
-                                }
+                                //List<String> reste = new List<String>();
+                                //for (int i = 0; i < tabVal.Length; i++)
+                                //{
+                                //    if (tabVal[i] <= 0) reste.Add(tabCoord[i]);
+                                //}
 
-                                Random rnd = new Random();
-                                coord[0] = mesPieces[rnd.Next(mesPieces.Count)];
-                                //coord[0] = "petit roque";
-                                coord[1] = tabCoord[rnd.Next(reste.Count)];
-                                //coord[1] = "";
-                                //coord[2] = "";
+                                //Random rnd = new Random();
+                                //coord[0] = mesPieces[rnd.Next(mesPieces.Count)];
+                                ////coord[0] = "petit roque";
+                                //coord[1] = tabCoord[rnd.Next(reste.Count)];
+                                ////coord[1] = "";
+                                ////coord[2] = "";
+
+                                int[] simul = fonctionsIA.Fonction1(tabVal, 2);
+
+                                coord[0] = tabCoord[simul[0]];
+                                coord[1] = tabCoord[simul[1]];
+
+                                if (simul[2] == 1)
+                                {
+                                    coord[2] = "D";
+                                }
+                                else
+                                {
+                                    coord[2] = "";
+                                }
 
                                 /********************************************************************************************************/
                                 /********************************************************************************************************/

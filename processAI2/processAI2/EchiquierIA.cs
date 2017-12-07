@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace processAI1
+namespace processAI2
 {
     public class EchiquierIA
     {
@@ -55,7 +55,7 @@ namespace processAI1
         //Constructeur
         private EchiquierIA()
         {
-            trait = 1;
+            trait = -1;
             traitblanc = 1;
             traitnoir = -1;
             cpt = casePassant = saveDep = saveArr = 0;

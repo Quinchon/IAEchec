@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace processAI1
+namespace processAI2
 {
     public class FonctionsIA
     {
@@ -115,7 +115,7 @@ namespace processAI1
             foreach (int val in plateau)
             {
                 // Determine à qui appartient la piece
-                if (val > 0)
+                if (val < 0)
                 {
                     bonus = 1; // appartient a l'IA
                 }
@@ -187,8 +187,7 @@ namespace processAI1
         // Renvoie le déplacement a effectuer (piece et deplacement)
         public int[] Fonction1(int[] currentPlateau, int profondeurMax)
         {
-
-            echIA.setTraitBlanc();
+            echIA.setTraitNoir();
             int[] deplacement = new int[3]; // contient le résultat de la fonction
             List<int[]> listeTrios = new List<int[]>(); // Contient les trios (piece, deplacement, score)
             List<move> listeMoves = new List<move>(); // Contient une piece, un deplacement et un plateau par move
@@ -196,7 +195,7 @@ namespace processAI1
             List<int> mesPieces = new List<int>(); // Liste les pieces de l'IA (liste de leurs index sur le plateau)
             for (int i = 0; i < currentPlateau.Length; i++)
             {
-                if (currentPlateau[i] > 0) mesPieces.Add(i);
+                if (currentPlateau[i] < 0) mesPieces.Add(i);
             }
 
 
@@ -229,7 +228,7 @@ namespace processAI1
             deplacement[1] = listeTrios.ElementAt(index)[1];
 
             // Cas ou pion est promu
-            if(currentPlateau[deplacement[0]] == 1 && (currentPlateau[deplacement[1]] >=0 || currentPlateau[deplacement[1]] <= 7))
+            if(currentPlateau[deplacement[0]] == -1 && (currentPlateau[deplacement[1]] >=56 || currentPlateau[deplacement[1]] <= 63))
             {
                 deplacement[2] = 1;
             }
@@ -263,7 +262,7 @@ namespace processAI1
         // Recursion max (pour simuler le tour de l'IA)
         public int RecMax(int[] CurrentPlateau, int profondeur)
         {
-            echIA.setTraitBlanc();
+            echIA.setTraitNoir();
             int bestScore = -2000; // Initialise le meilleur score pour cette branche
 
             if (profondeur <= 0)
@@ -275,7 +274,7 @@ namespace processAI1
                 List<int> mesPieces = new List<int>(); // Liste les pieces de l'IA
                 for (int i = 0; i < CurrentPlateau.Length; i++)
                 {
-                    if (CurrentPlateau[i] > 0) mesPieces.Add(i);
+                    if (CurrentPlateau[i] < 0) mesPieces.Add(i);
                 }
 
                 List<int[]> listePlateau = DeduitListePlateau(CurrentPlateau, mesPieces); // Liste des plateaux possible à partir du plateau courant
@@ -298,7 +297,7 @@ namespace processAI1
         // Recursion min (pour simuler le tour de l'adversaire)
         public int RecMin(int[] CurrentPlateau, int profondeur)
         {
-            echIA.setTraitNoir();
+            echIA.setTraitBlanc();
             int worstScore = 2000; // Initialise le meilleur score pour cette branche
 
             if (profondeur <= 0)
@@ -310,7 +309,7 @@ namespace processAI1
                 List<int> mesPieces = new List<int>(); // Liste les pieces de l'IA
                 for (int i = 0; i < CurrentPlateau.Length; i++)
                 {
-                    if (CurrentPlateau[i] < 0) mesPieces.Add(i);
+                    if (CurrentPlateau[i] > 0) mesPieces.Add(i);
                 }
 
                 List<int[]> listePlateau = DeduitListePlateau(CurrentPlateau, mesPieces); // Liste des plateaux possible à partir du plateau courant
