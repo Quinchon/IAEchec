@@ -229,7 +229,7 @@ namespace processAI1
             deplacement[1] = listeTrios.ElementAt(index)[1];
 
             // Cas ou pion est promu
-            if(currentPlateau[deplacement[0]] == 1 && (currentPlateau[deplacement[1]] >=0 || currentPlateau[deplacement[1]] <= 7))
+            if(currentPlateau[deplacement[0]] == 1 && (deplacement[1] >=0 && deplacement[1] <= 7))
             {
                 deplacement[2] = 1;
             }
@@ -245,16 +245,27 @@ namespace processAI1
         // Renvoie l'index dans la liste du meilleur trio en fonction du score
         public int DetermineMeilleurTrio(List<int[]> listeTrios)
         {
-            int index = 0;
+
+            List<int> index = new List<int>();
             int bestScore = listeTrios.ElementAt(0)[2];
+            index.Add(0);
             for (int i = 1; i < listeTrios.Count; i++)
             {
+                if (listeTrios.ElementAt(i)[2] == bestScore)
+                {
+                    index.Add(i);
+                }
                 if (listeTrios.ElementAt(i)[2] > bestScore)
                 {
-                    index = i;
+                    index.Clear();
+                    index.Add(i);
+                    bestScore = listeTrios.ElementAt(i)[2];
                 }
             }
-            return index;
+            Random rnd = new Random();
+
+            // On renvoit un élément aléatoire de la liste des meilleurs deplacements possibles avec un même score 
+            return index.ElementAt(rnd.Next(0, index.Count));
         }
 
 

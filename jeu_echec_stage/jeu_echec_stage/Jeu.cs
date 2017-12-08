@@ -102,7 +102,7 @@ namespace jeu_echec_stage
                                         TimeSpan dur = DateTime.Now - start;
 
                                         //Elle perd si elle répond en plus de 250ms
-                                        if (dur.TotalMilliseconds > 1000000)
+                                        if (dur.TotalMilliseconds > 250)
                                         {
                                             form.setJoueur("BLANCS");
                                             fin = 1;
@@ -139,7 +139,7 @@ namespace jeu_echec_stage
                                         mutexAI2.WaitOne();
                                         TimeSpan dur = DateTime.Now - start;
 
-                                        if (dur.TotalMilliseconds > 10000000)
+                                        if (dur.TotalMilliseconds > 250)
                                         {
                                             form.setJoueur("NOIRS");
                                             form.finPartie(1);
