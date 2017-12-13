@@ -50,15 +50,78 @@ namespace processAI1
         public List<int> DeduitDeplacementPossible(int piece, int[] plateau)
         {
             List<int> listeDepl = new List<int>();
+            int trait = 0;
 
-            // On met l'echiquier dans l'etat adeqat
-            echIA.SetPlateau(plateau);
-
-            /* TODO pour affiner la recherche des déplacements possibles
-            switch (piece)
+            // Cas blancs
+            if (plateau[piece] > 0)
             {
-                case 1: // cas pion 
-                    //do thing
+                trait = 1;
+            }
+            // Cas noirs
+            if (plateau[piece] < 0)
+            {
+                trait = -1;
+            }
+
+            switch (Math.Abs(plateau[piece]))
+            {
+                case 1: // Cas pion 
+
+                    // Cas pion n'a pas encore bougé
+                    if (((piece >= 8) && (piece <= 15)) || ((piece >= 48) && (piece <= 55)))
+                    {
+                        // Une case devant
+                        if (plateau[piece + (8 * trait)] == 0)
+                        {
+                            listeDepl.Add(piece + (8 * trait));
+
+                            // Deux cases devant
+                            if (plateau[piece + (16 * trait)] == 0)
+                            {
+                                listeDepl.Add(piece + (16 * trait));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Une case devant
+                        if (plateau[piece + (8 * trait)] == 0)
+                        {
+                            listeDepl.Add(piece + (8 * trait));
+                        }
+                    }
+
+                    // En diagonale
+                    // Si sur bord gauche
+                    if (piece % 8 == 0)
+                    {
+                        if (plateau[piece + -trait * (8 - trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 - trait));
+                        }
+                    }
+                    // Si sur bord droit
+                    if (piece % 8 == 7)
+                    {
+                        if (plateau[piece + -trait * (8 + trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 + trait));
+                        }
+                    }
+                    // Si sur aucun bord
+                    if (piece % 8 != 0 && piece % 8 != 7)
+                    {
+                        if (plateau[piece + -trait * (8 - trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 - trait));
+                        }
+                        if (plateau[piece + -trait * (8 + trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 + trait));
+                        }
+                    }
+
+
                     break;
                 case 21: // cas tour
                     //do thing
@@ -80,18 +143,20 @@ namespace processAI1
                     break;
                 case 6: // cas roi
                     //do thing
-                    break;    
+                    break;
             }
-            */
 
-            // parcours le plateau a la recherche de deplacements possibles pour la piece
-            for (int arrivee=0;arrivee< plateau.Length;arrivee++)
-            {
-                if (echIA.valide(piece, arrivee))
-                {
-                    listeDepl.Add(arrivee);
-                }
-            }
+            //// On met l'echiquier dans l'etat adeqat
+            //echIA.SetPlateau(plateau);
+
+            //// parcours le plateau a la recherche de deplacements possibles pour la piece
+            //for (int arrivee = 0; arrivee < plateau.Length; arrivee++)
+            //{
+            //    if (echIA.valide(piece, arrivee))
+            //    {
+            //        listeDepl.Add(arrivee);
+            //    }
+            //}
 
             return listeDepl;
         }
@@ -123,7 +188,7 @@ namespace processAI1
                 {
                     bonus = -1; // appartient a l'adversaire
                 }
-                
+
 
                 // ajoute le score associe à la piece
                 switch (Math.Abs(val))
@@ -229,7 +294,7 @@ namespace processAI1
             deplacement[1] = listeTrios.ElementAt(index)[1];
 
             // Cas ou pion est promu
-            if(currentPlateau[deplacement[0]] == 1 && (deplacement[1] >=0 && deplacement[1] <= 7))
+            if (currentPlateau[deplacement[0]] == 1 && (deplacement[1] >= 0 && deplacement[1] <= 7))
             {
                 deplacement[2] = 1;
             }
@@ -342,7 +407,7 @@ namespace processAI1
 
             return worstScore;
         }
-    } 
+    }
 
 }
-        
+
