@@ -85,7 +85,7 @@ namespace processAI2
             */
 
             // parcours le plateau a la recherche de deplacements possibles pour la piece
-            for (int arrivee=0;arrivee< plateau.Length;arrivee++)
+            for (int arrivee = 0; arrivee < plateau.Length; arrivee++)
             {
                 if (echIA.valide(piece, arrivee))
                 {
@@ -123,7 +123,7 @@ namespace processAI2
                 {
                     bonus = -1; // appartient a l'adversaire
                 }
-                
+
 
                 // ajoute le score associe à la piece
                 switch (Math.Abs(val))
@@ -199,6 +199,7 @@ namespace processAI2
             }
 
 
+
             // Pour chacune des pieces de l'IA
             foreach (int piece in mesPieces)
             {
@@ -228,7 +229,7 @@ namespace processAI2
             deplacement[1] = listeTrios.ElementAt(index)[1];
 
             // Cas ou pion est promu
-            if(currentPlateau[deplacement[0]] == -1 && (deplacement[1] >=56 && deplacement[1] <= 63))
+            if (currentPlateau[deplacement[0]] == -1 && (deplacement[1] >= 56 && deplacement[1] <= 63))
             {
                 deplacement[2] = 1;
             }
@@ -340,7 +341,7 @@ namespace processAI2
 
             return worstScore;
         }
-    } 
+    }
 
 }
-        
+
