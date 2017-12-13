@@ -23,7 +23,8 @@ namespace jeu_echec_stage
         private const int TAILLE_BTN = 60; //Taille d'une case
 
         //private const String IMG_PATH = "D:\\Logiciels développés\\[2017-06-30] - Échecs\\jeu_echec_stage\\images\\";
-        private const String IMG_PATH = "D:\\Cours\\Cours_3A\\IA\\Jeu_echec\\IAEchec\\jeu_echec_stage\\images\\";
+        //private const String IMG_PATH = "D:\\Cours\\Cours_3A\\IA\\Jeu_echec\\IAEchec\\jeu_echec_stage\\images\\";
+        private const String IMG_PATH = "C:\\Users\\Mri\\source\\repos\\IAEchec\\jeu_echec_stage\\images\\";
 
         private Button[] plateau; //Tableau de bouton qui représente l'échiquier
         private Echiquier ech = Echiquier.Instance(); //Instance de la classe Echiquier pour utiliser les méthodes de la classe

@@ -120,11 +120,9 @@ namespace processAI1
                             listeDepl.Add(piece + -trait * (8 + trait));
                         }
                     }
-
-
                     break;
+
                 case 21: // cas tour
-                    //do thing
                     break;
                 case 22: // cas tour
                     //do thing
