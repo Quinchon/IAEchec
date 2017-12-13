@@ -28,3 +28,10 @@ D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI2\processAI2\obj\Debug\processAI
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI2\processAI2\obj\Debug\processAI2.csproj.CoreCompileInputs.cache
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI2\processAI2\obj\Debug\processAI2.exe
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\processAI2\processAI2\obj\Debug\processAI2.pdb
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\bin\Debug\processAI2.exe.config
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\bin\Debug\processAI2.exe
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\bin\Debug\processAI2.pdb
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\obj\Debug\processAI2.csprojResolveAssemblyReference.cache
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\obj\Debug\processAI2.csproj.CoreCompileInputs.cache
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\obj\Debug\processAI2.exe
+C:\Users\Mri\source\repos\IAEchec\processAI2\processAI2\obj\Debug\processAI2.pdb

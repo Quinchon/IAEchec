@@ -39,3 +39,13 @@ D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.csproj.CoreCompileInputs.cache
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.exe
 D:\Cours\Cours_3A\IA\Jeu_echec\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.pdb
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\bin\Debug\jeu_echec_stage.exe.config
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\bin\Debug\jeu_echec_stage.exe
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\bin\Debug\jeu_echec_stage.pdb
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.csprojResolveAssemblyReference.cache
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.Form1.resources
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.Properties.Resources.resources
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.csproj.GenerateResource.Cache
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.csproj.CoreCompileInputs.cache
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.exe
+C:\Users\Mri\Source\Repos\IAEchec\jeu_echec_stage\jeu_echec_stage\obj\Debug\jeu_echec_stage.pdb
