@@ -296,6 +296,7 @@ namespace processAI2
                 foreach (int[] plt in listePlateau)
                 {
                     int score = RecMin(plt, profondeur - 1);
+                    //TODO
                     if (score > bestScore)
                     {
                         bestScore = score;
@@ -331,6 +332,7 @@ namespace processAI2
                 foreach (int[] plt in listePlateau)
                 {
                     int score = RecMax(plt, profondeur - 1);
+                    //TODO
                     if (score < worstScore)
                     {
                         worstScore = score;
