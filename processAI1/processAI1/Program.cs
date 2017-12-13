@@ -89,7 +89,7 @@ namespace processAI1
                                 ////coord[2] = "P";
 
 
-                                int[] simul = fonctionsIA.Fonction1(tabVal, 2);
+                                int[] simul = fonctionsIA.Fonction1(tabVal, 3);
                             
                                 coord[0] = tabCoord[simul[0]];
                                 coord[1] = tabCoord[simul[1]];

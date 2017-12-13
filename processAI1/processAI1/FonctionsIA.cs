@@ -9,6 +9,7 @@ namespace processAI1
 {
     public class FonctionsIA
     {
+
         // On instancie notre echiquier (different de l'instance de jeu) utile pour nos calculs
         private EchiquierIA echIA;
 
@@ -149,9 +150,17 @@ namespace processAI1
                     case 5: // cas dame
                         score += (10 * bonus);
                         break;
-                    case 6: // cas roi
-                        score += (1000 * bonus);
-                        break;
+                    //case 6: // cas roi
+                    //    score += (1000 * bonus);
+                    //    break;
+                }
+                if (val == 6)
+                {
+                    score += 1000;
+                }
+                if (val == -6)
+                {
+                    score -= 200;
                 }
 
             }
@@ -188,6 +197,9 @@ namespace processAI1
         public int[] Fonction1(int[] currentPlateau, int profondeurMax)
         {
 
+            int alpha = -10000;
+            int beta = 10000;
+
             echIA.setTraitBlanc();
             int[] deplacement = new int[3]; // contient le résultat de la fonction
             List<int[]> listeTrios = new List<int[]>(); // Contient les trios (piece, deplacement, score)
@@ -217,7 +229,7 @@ namespace processAI1
             // Pour chaque move on va determine le score associe et creer un trio (piece, deplacement, score) associe
             foreach (move m in listeMoves)
             {
-                int[] trio = { m.piece, m.deplacement, RecMin(m.plateau, profondeurMax - 1) };
+                int[] trio = { m.piece, m.deplacement, RecMin(m.plateau, profondeurMax - 1, alpha, beta) };
                 listeTrios.Add(trio);
             }
 
@@ -272,7 +284,7 @@ namespace processAI1
 
 
         // Recursion max (pour simuler le tour de l'IA)
-        public int RecMax(int[] CurrentPlateau, int profondeur)
+        public int RecMax(int[] CurrentPlateau, int profondeur, int alpha, int beta)
         {
             echIA.setTraitBlanc();
             int bestScore = -2000; // Initialise le meilleur score pour cette branche
@@ -294,11 +306,18 @@ namespace processAI1
                 // Determine le meilleur score parmi les plateaux trouves
                 foreach (int[] plt in listePlateau)
                 {
-                    int score = RecMin(plt, profondeur - 1);
-                    //TODO
+                    int score = RecMin(plt, profondeur - 1, alpha, beta);
                     if (score > bestScore)
                     {
                         bestScore = score;
+                        if (bestScore >= beta)
+                        {
+                            return bestScore;
+                        }
+                        if (bestScore >= alpha)
+                        {
+                            alpha = bestScore;
+                        }
                     }
                 }
 
@@ -308,7 +327,7 @@ namespace processAI1
         }
 
         // Recursion min (pour simuler le tour de l'adversaire)
-        public int RecMin(int[] CurrentPlateau, int profondeur)
+        public int RecMin(int[] CurrentPlateau, int profondeur, int alpha, int beta)
         {
             echIA.setTraitNoir();
             int worstScore = 2000; // Initialise le meilleur score pour cette branche
@@ -328,13 +347,21 @@ namespace processAI1
                 List<int[]> listePlateau = DeduitListePlateau(CurrentPlateau, mesPieces); // Liste des plateaux possible à partir du plateau courant
 
                 // Determine le moins bon score parmi les plateaux trouves
+
                 foreach (int[] plt in listePlateau)
                 {
-                    int score = RecMax(plt, profondeur - 1);
-                    // TODO
+                    int score = RecMax(plt, profondeur - 1, alpha, beta);
                     if (score < worstScore)
                     {
                         worstScore = score;
+                        if (worstScore <= alpha)
+                        {
+                            return worstScore;
+                        }
+                        if (worstScore <= beta)
+                        {
+                            beta = worstScore;
+                        }
                     }
                 }
 
@@ -345,4 +372,3 @@ namespace processAI1
     } 
 
 }
-        
