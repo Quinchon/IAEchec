@@ -11,6 +11,7 @@ namespace processAI1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             try
@@ -68,28 +69,10 @@ namespace processAI1
                                 /******************************************************************************************************/
                                 /***************************************** ECRIRE LE CODE DE L'IA *************************************/
                                 /******************************************************************************************************/
+                                
+                            
 
-                                //List<String> mesPieces = new List<String>();
-                                //for (int i = 0; i < tabVal.Length; i++)
-                                //{
-                                //    if (tabVal[i] > 0) mesPieces.Add(tabCoord[i]);
-                                //}
-
-                                //List<String> reste = new List<String>();
-                                //for (int i = 0; i < tabVal.Length; i++)
-                                //{
-                                //    if (tabVal[i] <= 0) reste.Add(tabCoord[i]);
-                                //}
-
-                                //Random rnd = new Random();
-                                //coord[0] = mesPieces[rnd.Next(mesPieces.Count)];
-                                ////coord[0] = "b7";
-                                ////coord[1] = "b8";
-                                //coord[1] = tabCoord[rnd.Next(reste.Count)];
-                                ////coord[2] = "P";
-
-
-                                int[] simul = fonctionsIA.Fonction1(tabVal, 3);
+                            int[] simul = fonctionsIA.Fonction1(tabVal, 5);
                             
                                 coord[0] = tabCoord[simul[0]];
                                 coord[1] = tabCoord[simul[1]];

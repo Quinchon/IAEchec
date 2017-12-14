@@ -9,15 +9,13 @@ namespace processAI2
 {
     public class FonctionsIA
     {
-        // On instancie notre echiquier (different de l'instance de jeu) utile pour nos calculs
-        private EchiquierIA echIA;
+
 
 
 
         //Constructeur
         public FonctionsIA()
         {
-            echIA = EchiquierIA.Instance();
         }
 
 
@@ -50,47 +48,648 @@ namespace processAI2
         public List<int> DeduitDeplacementPossible(int piece, int[] plateau)
         {
             List<int> listeDepl = new List<int>();
+            int trait = 0;
 
-            // On met l'echiquier dans l'etat adeqat
-            echIA.SetPlateau(plateau);
-
-            /* TODO pour affiner la recherche des déplacements possibles
-            switch (piece)
+            // Cas blancs
+            if (plateau[piece] > 0)
             {
-                case 1: // cas pion 
-                    //do thing
-                    break;
-                case 21: // cas tour
-                    //do thing
-                    break;
-                case 22: // cas tour
-                    //do thing
-                    break;
-                case 31: // cas cavalier
-                    //do thing
-                    break;
-                case 32: // cas cavalier
-                    //do thing
-                    break;
-                case 4: // cas fou
-                    //do thing
-                    break;
-                case 5: // cas dame
-                    //do thing
-                    break;
-                case 6: // cas roi
-                    //do thing
-                    break;    
+                trait = 1;
             }
-            */
-
-            // parcours le plateau a la recherche de deplacements possibles pour la piece
-            for (int arrivee = 0; arrivee < plateau.Length; arrivee++)
+            // Cas noirs
+            if (plateau[piece] < 0)
             {
-                if (echIA.valide(piece, arrivee))
-                {
-                    listeDepl.Add(arrivee);
-                }
+                trait = -1;
+            }
+
+
+            // Sert à sortir d'une la boucle si on arrive sur une autre piece
+            bool stop = false;
+            // Sert à avancer et tester les cases suivantes
+            int facteur = 1;
+
+            switch (Math.Abs(plateau[piece]))
+            {
+                case 1: //////////************ Cas pion *************///////////////
+
+                    // Cas pion n'a pas encore bougé
+                    if (((piece >= 8) && (piece <= 15) && trait == -1) || ((piece >= 48) && (piece <= 55) && trait == 1))
+                    {
+                        // Une case devant
+                        if (plateau[piece + (8 * -trait)] == 0)
+                        {
+                            listeDepl.Add(piece + (8 * -trait));
+
+                            // Deux cases devant
+                            if (plateau[piece + (16 * -trait)] == 0)
+                            {
+                                listeDepl.Add(piece + (16 * -trait));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Une case devant
+                        if (piece + (8 * -trait) > 0 || piece + (8 * -trait) < 63)
+                        {
+                            if (plateau[piece + (8 * -trait)] == 0)
+                            {
+                                listeDepl.Add(piece + (8 * -trait));
+                            }
+                        }
+
+                    }
+
+                    // En diagonale
+                    // Si sur bord gauche
+                    if (piece % 8 == 0)
+                    {
+                        if (plateau[piece + -trait * (8 - trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 - trait));
+                        }
+                    }
+                    // Si sur bord droit
+                    if (piece % 8 == 7)
+                    {
+                        if (plateau[piece + -trait * (8 + trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 + trait));
+                        }
+                    }
+                    // Si sur aucun bord
+                    if (piece % 8 != 0 && piece % 8 != 7)
+                    {
+                        if (plateau[piece + -trait * (8 - trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 - trait));
+                        }
+                        if (plateau[piece + -trait * (8 + trait)] * trait < 0)
+                        {
+                            listeDepl.Add(piece + -trait * (8 + trait));
+                        }
+                    }
+                    break;
+
+                case 21: //////////************ Cas tour *************///////////////
+                case 22: // cas tour
+
+                    // Sert à sortir de la boucle si on arrive sur une autre piece
+                    stop = false;
+                    // Sert à avancer et tester les cases suivantes
+                    facteur = 1;
+
+                    // Cas tour descend
+                    while (piece + 8 * facteur <= 63 && !stop)
+                    {
+                        if (plateau[piece + 8 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 8 * facteur);
+                        }
+                        if (plateau[piece + 8 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 8 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 8 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas tour monte
+                    facteur = 1;
+                    stop = false;
+                    while (piece - 8 * facteur >= 0 && !stop)
+                    {
+                        if (plateau[piece - 8 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 8 * facteur);
+                        }
+                        if (plateau[piece - 8 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 8 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 8 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas à droite
+                    facteur = 1;
+                    stop = false;
+                    while (piece % 8 + facteur < 8 && !stop)
+                    {
+                        if (plateau[piece + facteur] == 0)
+                        {
+                            listeDepl.Add(piece + facteur);
+                        }
+                        if (plateau[piece + facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas à gauche
+                    facteur = 1;
+                    stop = false;
+                    while (piece % 8 - facteur > -1 && !stop)
+                    {
+                        if (plateau[piece - facteur] == 0)
+                        {
+                            listeDepl.Add(piece - facteur);
+                        }
+                        if (plateau[piece - facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    break;
+
+
+                case 4: //////////************ Cas fou *************///////////////
+
+                    // Sert à sortir de la boucle si on arrive sur une autre piece
+                    stop = false;
+                    // Sert à avancer et tester les cases suivantes
+                    facteur = 1;
+
+                    // Cas fou descend droite
+                    while ((piece % 8 + facteur < 8) && (piece + 9 * facteur <= 63) && !stop)
+                    {
+                        if (plateau[piece + 9 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 9 * facteur);
+                        }
+                        if (plateau[piece + 9 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 9 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 9 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas fou descend gauche
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 - facteur > -1) && (piece + 7 * facteur < 63) && !stop)
+                    {
+                        if (plateau[piece + 7 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 7 * facteur);
+                        }
+                        if (plateau[piece + 7 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 7 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 7 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas fou monte droite
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 + facteur < 8) && (piece - 7 * facteur > 0) && !stop)
+                    {
+                        if (plateau[piece - 7 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 7 * facteur);
+                        }
+                        if (plateau[piece - 7 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 7 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 7 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas fou monte gauche
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 - facteur > -1) && (piece - 9 * facteur >= 0) && !stop)
+                    {
+                        if (plateau[piece - 9 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 9 * facteur);
+                        }
+                        if (plateau[piece - 9 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 9 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 9 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    break;
+                case 31: //////////************ Cas cavalier *************///////////////
+                case 32: // Cas cavalier
+
+                    // Cas gauche
+                    // Cas haut
+                    if ((piece % 8 - 2 > -1) && (piece - 10 >= 0))
+                    {
+                        if (plateau[piece - 10] == 0)
+                        {
+                            listeDepl.Add(piece - 10);
+                        }
+                        if (plateau[piece - 10] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 10);
+                        }
+                    }
+                    if ((piece % 8 - 1 > -1) && (piece - 17 >= 0))
+                    {
+                        if (plateau[piece - 17] == 0)
+                        {
+                            listeDepl.Add(piece - 17);
+                        }
+                        if (plateau[piece - 17] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 17);
+                        }
+                    }
+                    // Cas bas
+                    if ((piece % 8 - 2 > -1) && (piece + 6 <= 63))
+                    {
+                        if (plateau[piece + 6] == 0)
+                        {
+                            listeDepl.Add(piece + 6);
+                        }
+                        if (plateau[piece + 6] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 6);
+                        }
+                    }
+                    if ((piece % 8 - 1 > -1) && (piece + 15 <= 63))
+                    {
+                        if (plateau[piece + 15] == 0)
+                        {
+                            listeDepl.Add(piece + 15);
+                        }
+                        if (plateau[piece + 15] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 15);
+                        }
+                    }
+
+                    // Cas droit
+                    // Cas bas
+                    if ((piece % 8 + 2 < 8) && (piece + 10 <= 63))
+                    {
+                        if (plateau[piece + 10] == 0)
+                        {
+                            listeDepl.Add(piece + 10);
+                        }
+                        if (plateau[piece + 10] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 10);
+                        }
+                    }
+                    if ((piece % 8 + 1 < 8) && (piece + 17 <= 63))
+                    {
+                        if (plateau[piece + 17] == 0)
+                        {
+                            listeDepl.Add(piece + 17);
+                        }
+                        if (plateau[piece + 17] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 17);
+                        }
+                    }
+                    // Cas haut
+                    if ((piece % 8 + 2 < 8) && (piece - 6 >= 0))
+                    {
+                        if (plateau[piece - 6] == 0)
+                        {
+                            listeDepl.Add(piece - 6);
+                        }
+                        if (plateau[piece - 6] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 6);
+                        }
+                    }
+                    if ((piece % 8 + 1 < 8) && (piece - 15 >= 0))
+                    {
+                        if (plateau[piece - 15] == 0)
+                        {
+                            listeDepl.Add(piece - 15);
+                        }
+                        if (plateau[piece - 15] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 15);
+                        }
+                    }
+                    break;
+
+                case 5: //////////************ Cas dame *************///////////////
+
+                    // Sert à sortir de la boucle si on arrive sur une autre piece
+                    stop = false;
+                    // Sert à avancer et tester les cases suivantes
+                    facteur = 1;
+
+                    // Cas dame descend droite
+                    while ((piece % 8 + facteur < 8) && (piece + 9 * facteur <= 63) && !stop)
+                    {
+                        if (plateau[piece + 9 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 9 * facteur);
+                        }
+                        if (plateau[piece + 9 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 9 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 9 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame descend gauche
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 - facteur > -1) && (piece + 7 * facteur < 63) && !stop)
+                    {
+                        if (plateau[piece + 7 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 7 * facteur);
+                        }
+                        if (plateau[piece + 7 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 7 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 7 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame monte droite
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 + facteur < 8) && (piece - 7 * facteur > 0) && !stop)
+                    {
+                        if (plateau[piece - 7 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 7 * facteur);
+                        }
+                        if (plateau[piece - 7 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 7 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 7 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame monte gauche
+                    stop = false;
+                    facteur = 1;
+                    while ((piece % 8 - facteur > -1) && (piece - 9 * facteur >= 0) && !stop)
+                    {
+                        if (plateau[piece - 9 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 9 * facteur);
+                        }
+                        if (plateau[piece - 9 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 9 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 9 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+                    // Sert à sortir de la boucle si on arrive sur une autre piece
+                    stop = false;
+                    // Sert à avancer et tester les cases suivantes
+                    facteur = 1;
+
+                    // Cas dame descend
+                    while (piece + 8 * facteur <= 63 && !stop)
+                    {
+                        if (plateau[piece + 8 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece + 8 * facteur);
+                        }
+                        if (plateau[piece + 8 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 8 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + 8 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame monte
+                    facteur = 1;
+                    stop = false;
+                    while (piece - 8 * facteur >= 0 && !stop)
+                    {
+                        if (plateau[piece - 8 * facteur] == 0)
+                        {
+                            listeDepl.Add(piece - 8 * facteur);
+                        }
+                        if (plateau[piece - 8 * facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 8 * facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - 8 * facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame à droite
+                    facteur = 1;
+                    stop = false;
+                    while (piece % 8 + facteur < 8 && !stop)
+                    {
+                        if (plateau[piece + facteur] == 0)
+                        {
+                            listeDepl.Add(piece + facteur);
+                        }
+                        if (plateau[piece + facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece + facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece + facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+                    // Cas dame à gauche
+                    facteur = 1;
+                    stop = false;
+                    while (piece % 8 - facteur > -1 && !stop)
+                    {
+                        if (plateau[piece - facteur] == 0)
+                        {
+                            listeDepl.Add(piece - facteur);
+                        }
+                        if (plateau[piece - facteur] * trait < 0)
+                        {
+                            listeDepl.Add(piece - facteur);
+                            stop = true;
+                        }
+                        if (plateau[piece - facteur] * trait > 0)
+                        {
+                            stop = true;
+                        }
+                        facteur += 1;
+                    }
+
+
+
+                    break;
+                case 6: //////////************ Cas roi *************///////////////
+
+                    // Cas haut gauche
+                    if ((piece % 8 - 1 > -1) && (piece - 9 >= 0))
+                    {
+                        if (plateau[piece - 9] == 0)
+                        {
+                            listeDepl.Add(piece - 9);
+                        }
+                        if (plateau[piece - 9] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 9);
+                        }
+                    }
+                    // Cas gauche
+                    if ((piece % 8 - 1 > -1))
+                    {
+                        if (plateau[piece - 1] == 0)
+                        {
+                            listeDepl.Add(piece - 1);
+                        }
+                        if (plateau[piece - 1] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 1);
+                        }
+                    }
+                    // Cas bas gauche
+                    if ((piece % 8 - 1 > -1) && (piece + 7 <= 63))
+                    {
+                        if (plateau[piece + 7] == 0)
+                        {
+                            listeDepl.Add(piece + 7);
+                        }
+                        if (plateau[piece + 7] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 7);
+                        }
+                    }
+                    // Cas haut
+                    if ((piece - 8 >= 0))
+                    {
+                        if (plateau[piece - 8] == 0)
+                        {
+                            listeDepl.Add(piece - 8);
+                        }
+                        if (plateau[piece - 8] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 8);
+                        }
+                    }
+                    // Cas bas
+                    if ((piece + 8 <= 63))
+                    {
+                        if (plateau[piece + 8] == 0)
+                        {
+                            listeDepl.Add(piece + 8);
+                        }
+                        if (plateau[piece + 8] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 8);
+                        }
+                    }
+                    // Cas haut droit
+                    if ((piece % 8 + 1 < 8) && (piece - 7 >= 0))
+                    {
+                        if (plateau[piece - 7] == 0)
+                        {
+                            listeDepl.Add(piece - 7);
+                        }
+                        if (plateau[piece - 7] * trait < 0)
+                        {
+                            listeDepl.Add(piece - 7);
+                        }
+                    }
+                    // Cas droit
+                    if (piece % 8 + 1 < 8)
+                    {
+                        if (plateau[piece + 1] == 0)
+                        {
+                            listeDepl.Add(piece + 1);
+                        }
+                        if (plateau[piece + 1] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 1);
+                        }
+                    }
+                    // Cas bas droit
+                    if ((piece % 8 + 1 < 8) && (piece + 9 <= 63))
+                    {
+                        if (plateau[piece + 9] == 0)
+                        {
+                            listeDepl.Add(piece + 9);
+                        }
+                        if (plateau[piece + 9] * trait < 0)
+                        {
+                            listeDepl.Add(piece + 9);
+                        }
+                    }
+                    break;
             }
 
             return listeDepl;
@@ -101,7 +700,16 @@ namespace processAI2
         public int[] DeduitPlateau(int depart, int arrivee, int[] plateau)
         {
             int[] nPlateau = (int[])plateau.Clone();
-            nPlateau[arrivee] = nPlateau[depart];
+
+            // Si promotion
+            if (Math.Abs(nPlateau[depart]) == 1 && ((arrivee >= 0 && arrivee <= 7) || (arrivee >= 56 && arrivee <= 63)))
+            {
+                nPlateau[arrivee] = nPlateau[depart] * 5; // On choisi une dame
+            }
+            else
+            {
+                nPlateau[arrivee] = nPlateau[depart];
+            }
             nPlateau[depart] = 0;
             return nPlateau;
         }
@@ -195,10 +803,10 @@ namespace processAI2
         // Renvoie le déplacement a effectuer (piece et deplacement)
         public int[] Fonction1(int[] currentPlateau, int profondeurMax)
         {
+
             int alpha = -10000;
             int beta = 10000;
-
-            echIA.setTraitNoir();
+            
             int[] deplacement = new int[3]; // contient le résultat de la fonction
             List<int[]> listeTrios = new List<int[]>(); // Contient les trios (piece, deplacement, score)
             List<move> listeMoves = new List<move>(); // Contient une piece, un deplacement et un plateau par move
@@ -286,7 +894,6 @@ namespace processAI2
         // Recursion max (pour simuler le tour de l'IA)
         public int RecMax(int[] CurrentPlateau, int profondeur, int alpha, int beta)
         {
-            echIA.setTraitNoir();
             int bestScore = -2000; // Initialise le meilleur score pour cette branche
 
             if (profondeur <= 0)
@@ -329,7 +936,7 @@ namespace processAI2
         // Recursion min (pour simuler le tour de l'adversaire)
         public int RecMin(int[] CurrentPlateau, int profondeur, int alpha, int beta)
         {
-            echIA.setTraitBlanc();
+
             int worstScore = 2000; // Initialise le meilleur score pour cette branche
 
             if (profondeur <= 0)
